@@ -1,44 +1,46 @@
-﻿@{
+﻿@model BackEndAssignment.Models.Questions
+@{
     ViewBag.Title = "Home Page";
 }
-    <button class="btn btn-primary" style="margin:50px;margin-bottom:0 !important" onclick="GetQuestions()">Refresh</button>
-
-<br />
-<span id="loading" class="hidden" style="margin:50px;margin-bottom:0 !important">Loading Data ...</span>
-    <div class="list-group" style="margin:50px"></div>
-
-@section Scripts{
-    <script>
-        var url = "https://api.stackexchange.com/2.2/questions/?page=1&pagesize=50&order=desc&sort=activity&site=stackoverflow";
-        GetQuestions();
-        function GetQuestions() {
-            $("#loading").removeClass("hidden");
-            $.ajax({
-                url: url,
-                async: true,
-                type: 'GET',
-                success: function (data) {
-                    console.log(data);
-                    var li = "";
-                    $.each(data.items, function (key, value) {
-                        key = key + 1;
-                        li += "<a href='@Url.Action("Quetion")/" + value.question_id+"' class='list-group-item list-group-item-action flex-column align-items-start'>"+
-                            "<div class='d-flex w-100 justify-content-between'>" +
-                            "<img class='img-circle' src=" + value.owner.profile_image + " width='40' height='40'/>" +
-                            "<h5 class='mb-1'>" + key+"-" + value.owner.display_name + "</h5>" +
-                            "<small>answer count " + value.answer_count +"</small>" +
-                            "<h6 class='mb-1'>" + value.title + "</h6></div>" +
-                            "</a>";
-                    });
-                    $(".list-group").html(li);
-                    $("#loading").addClass("hidden");
-                },
-                error: function (error) {
-                    $("#loading").addClass("hidden");
-                    $(this).remove();
-                    alert(error.statusText);
-                }
-            });
+    <button class="btn btn-primary" style="margin:50px;margin-bottom:0 !important" onclick="location.reload()">Refresh</button>
+<h1>Last 50 Questions</h1>
+<p>@Model.items.Count questions</p>
+<hr />
+    <div class="row">
+        @foreach (var question in Model.items)
+        {
+            <div class="col-md-12 row">
+                <div class="col-md-1 text-center">
+                    <div>
+                        <h5>@question.score</h5>
+                        <p>votes</p>
+                    </div>
+                    <div class="mt-3">
+                        <h5>@question.answer_count</h5>
+                        <p>answers </p>
+                    </div>
+                    <div class="mt-3">
+                        <p>@question.view_count views</p>
+                    </div>
+                </div>
+                <div class="col-md-11" style="padding-top:5px">
+                    <a href="~/Home/Quetion/@question.question_id">@question.title</a>
+                    <p></p>
+                    @foreach (var tag in question.tags)
+                    {
+                        <span class="badge badge-info">@tag</span>
+                    }
+                <div class="" style="margin-top:5px">
+                    <img class="img-circle" src="@question.owner.profile_image" width="40" height="40" />
+                    <h5>@question.owner.display_name</h5>
+                </div>
+                </div>
+                <div class="col-md-12">
+                    <hr />
+                </div>
+            </div>
         }
-    </script>
-    }
+    </div>
+
+
+

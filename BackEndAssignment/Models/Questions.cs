@@ -5,11 +5,11 @@ using System.Web;
 
 namespace BackEndAssignment.Models
 {
+
     public class Questions
     {
         public List<Item> items { get; set; }
         public bool has_more { get; set; }
-        public int backoff { get; set; }
         public int quota_max { get; set; }
         public int quota_remaining { get; set; }
     }
@@ -28,12 +28,11 @@ namespace BackEndAssignment.Models
         public string content_license { get; set; }
         public string link { get; set; }
         public string title { get; set; }
-        public int accepted_answer_id { get; set; }
         public int last_edit_date { get; set; }
+        public int accepted_answer_id { get; set; }
+        public int protected_date { get; set; }
         public int bounty_amount { get; set; }
         public int bounty_closes_date { get; set; }
-        public int protected_date { get; set; }
-        public int community_owned_date { get; set; }
     }
 
     public class Owner
@@ -41,9 +40,10 @@ namespace BackEndAssignment.Models
         public int reputation { get; set; }
         public int user_id { get; set; }
         public string user_type { get; set; }
+        public int accept_rate { get; set; }
         public string profile_image { get; set; }
         public string display_name { get; set; }
         public string link { get; set; }
-        public int accept_rate { get; set; }
     }
+
 }

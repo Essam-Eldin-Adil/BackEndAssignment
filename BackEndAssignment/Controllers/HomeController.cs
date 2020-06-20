@@ -15,13 +15,30 @@ namespace BackEndAssignment.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                var respons = new APIHub().GetRequest("2.2/questions/?page=1&pagesize=50&order=desc&sort=activity&site=stackoverflow");
+                var model = JsonConvert.DeserializeObject<Questions>(respons.Result.ToString());
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public ActionResult Quetion(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            try
+            {
+                var respons = new APIHub().GetRequest($"/2.2/questions/{id}?order=desc&sort=activity&site=stackoverflow");
+                var model = JsonConvert.DeserializeObject<Questions>(respons.Result.ToString());
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public ActionResult About()

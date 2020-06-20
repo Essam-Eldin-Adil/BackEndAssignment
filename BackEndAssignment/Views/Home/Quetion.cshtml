@@ -1,46 +1,16 @@
-﻿
+﻿@model BackEndAssignment.Models.Questions
 @{
     ViewBag.Title = "Quetion";
+    var question = Model.items[0];
+    var last_activity_date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(question.last_activity_date);
+    var creation_date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(question.creation_date);
 }
 <a href="~/Home/" class="btn btn-primary" style="margin:50px;margin-bottom:0 !important">back to questions</a>
-<br />
-<span id="loading" class="hidden" style="margin:50px;margin-bottom:0 !important">Loading Data ...</span>
 
-<div class="list-group" style="margin:50px"></div>
-
-@section Scripts{
-    <script>
-        var url = "https://api.stackexchange.com/2.2/questions/@ViewBag.Id?page=1&pagesize=50&order=desc&sort=activity&site=stackoverflow";
-        GetQuestions();
-        function GetQuestions() {
-            $("#loading").removeClass("hidden");
-            $.ajax({
-                url: url,
-                async: true,
-                type: 'GET',
-                success: function (data) {
-                    console.log(data);
-                    var li = "";
-                    $.each(data.items, function (key, value) {
-                        key = key + 1;
-                        li += "<div href='#' class='list-group-item list-group-item-action flex-column align-items-start'>"+
-                            "<div class='d-flex w-100 justify-content-between'>" +
-                            "<img class='img-circle' src=" + value.owner.profile_image + " width='40' height='40'/>" +
-                            "<h5 class='mb-1'>" + key+"-" + value.owner.display_name + "</h5>" +
-                            "<small>answer count " + value.answer_count +"</small>" +
-                            "<h6 class='mb-1'>" + value.title + "</h6></div>" +
-                            "</div>";
-                    });
-                    $(".list-group").html(li);
-                    $("#loading").addClass("hidden");
-                },
-                error: function (error) {
-                    $("#loading").addClass("hidden");
-                    $(this).remove();
-                    alert(error.statusText);
-                }
-            });
-        }
-    </script>
-}
+<h1>@question.title</h1>
+<p>
+    <span>Asked @creation_date</span>&ensp;
+    <span>Active @last_activity_date</span>&ensp;
+    <span>Viewed @question.view_count times</span>
+</p>
 
